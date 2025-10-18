@@ -1,0 +1,31 @@
+.transcription-panel {
+	background: #FFFFFF;
+	border: 1px solid rgba(25,118,210,0.2);
+	border-radius: 12px;
+	padding: 24px;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.transcription-header { 
+	font-weight: 600; 
+	margin-bottom: 12px; 
+	color: #1E1E1E;
+}
+
+.transcription-box {
+	flex: 1;
+	overflow: auto;
+	padding: 16px;
+	border-radius: 10px;
+	background: #F7F9FB;
+	border: 1px solid rgba(25,118,210,0.1);
+}
+
+.transcription-text { 
+	color: #5F6368; 
+	line-height: 1.8; 
+}
+
+

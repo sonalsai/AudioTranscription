@@ -2,8 +2,11 @@ import RecordingSection from "./components/RecordingSection/RecordingSection";
 import TranscriptionSection from "./components/TranscriptionSection/TranscriptionSection";
 import "./App.scss";
 import { githubLogo } from "./assets";
+import { useState } from "react";
 
 function App() {
+  const [transcriptionText, setTranscriptionText] = useState("");
+
   return (
     <div className="app-shell">
       <div className="app-header">
@@ -21,10 +24,10 @@ function App() {
       </div>
       <div className="content-grid">
         <div>
-          <RecordingSection />
+          <RecordingSection setTranscriptionText={setTranscriptionText} />
         </div>
         <div>
-          <TranscriptionSection />
+          <TranscriptionSection transcriptionText={transcriptionText} />
         </div>
       </div>
     </div>

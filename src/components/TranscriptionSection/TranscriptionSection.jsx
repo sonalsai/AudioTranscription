@@ -1,15 +1,18 @@
 // Plain HTML structure; styles in component SCSS
-import './TranscriptionSection.scss'
+import "./TranscriptionSection.scss";
 
-export default function TranscriptionSection() {
-    return (
-        <div className="transcription-panel">
-            <div className="transcription-header">Transcription</div>
-            <div className="transcription-box">
-                <div className="transcription-text">Transcription will appear here...</div>
-            </div>
-        </div>
-    );
-}
+const TranscriptionSection = ({ transcriptionText }) => {
+  return (
+    <div className="transcription-panel">
+      <div className="transcription-text">
+        {transcriptionText ? (
+          <p>{transcriptionText}</p>
+        ) : (
+          <p className="placeholder">Transcribed text will appear here...</p>
+        )}
+      </div>
+    </div>
+  );
+};
 
-
+export default TranscriptionSection;

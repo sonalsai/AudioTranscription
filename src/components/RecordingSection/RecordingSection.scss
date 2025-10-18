@@ -1,0 +1,279 @@
+.recording-panel {
+  background: #181818;
+  border: 1px solid #2e2e2e;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+  padding: 24px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.recording-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.recording-center.entering {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.recording-center.entered {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.recording-center.recording-active {
+  animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.mic-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: scaleIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.mic-button {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  background: #ffffff;
+  // border: 1px solid rgba(25,118,210,0.2);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 20px #e8eaed96;
+  transform: scale(1);
+}
+
+.mic-button:hover {
+  transform: scale(1.04);
+  background: #f7f9fb;
+  box-shadow: 0 0 25px rgba(66, 165, 245, 0.4);
+}
+
+.mic-button.recording {
+  transform: scale(1.1);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hint {
+  color: #d3d3d3;
+  font-weight: 500;
+}
+
+.mic-button.recording {
+  position: relative;
+  z-index: 10;
+  background: #ffffff;
+  border: 1px solid #808080;
+  box-shadow: 0 0 30px rgba(25, 118, 210, 0.4);
+  animation: mic-pulse 1.5s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mic-button.recording.muted {
+  background: #e3d025;
+  box-shadow: 0 0 20px #000;
+  animation: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.timer-display {
+  font-family: "Ubuntu", monospace;
+  font-size: 24px;
+  font-weight: 500;
+  color: #1e1e1e;
+  letter-spacing: 1px;
+  opacity: 0;
+  transform: scale(0.9);
+  animation: fadeInScale 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.recording-status {
+  margin-top: 20px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.4s forwards;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 500;
+  color: #1e1e1e;
+}
+
+.pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 112px;
+  height: 112px;
+  border: 2px solid #42a5f5;
+  border-radius: 50%;
+  opacity: 0;
+  animation: pulse 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+  transition: all 0.3s ease;
+}
+
+.pulse-ring.muted {
+  border-color: rgba(95, 99, 104, 0.3);
+  animation: pulse-muted 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-muted {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 0;
+  }
+}
+
+@keyframes mic-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 30px rgba(25, 118, 210, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(25, 118, 210, 0.6);
+  }
+}
+
+.toolbar {
+  display: flex;
+  gap: 20px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.toolbar-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mute-btn {
+  background: #f5f5f5;
+  color: #666;
+  transition: all 0.3s ease-in-out;
+}
+
+.mute-btn:hover {
+  background: #bcbcbc;
+  transform: scale(1.05);
+}
+
+.mute-btn.muted {
+  background: #e3d025;
+  color: #1e1e1e;
+  box-shadow: 0 2px 8px rgba(227, 208, 37, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+
+.mute-btn.muted:hover {
+  background: #d4c41f;
+  transform: scale(1.05);
+}
+
+.stop-btn {
+  background: #ef4444;
+  color: #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.stop-btn:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+button:focus,
+button:focus-visible {
+  outline: none;
+}

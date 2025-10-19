@@ -9,7 +9,7 @@ const connectWebSocket = (
   onError,
   onServerReady
 ) => {
-  const url = process.env.REACT_APP_WEBSOCKET_URL || "ws://localhost:8080/ws";
+  const url = import.meta.env.VITE_WEBSOCKET_URL || "ws://localhost:8080/ws";
   socket = new WebSocket(url);
 
   socket.onopen = onOpen;

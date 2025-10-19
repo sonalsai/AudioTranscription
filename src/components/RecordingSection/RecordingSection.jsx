@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import MicRoundedIcon from "@mui/icons-material/MicRounded";
 import MicOffRoundedIcon from "@mui/icons-material/MicOffRounded";
 import StopRoundedIcon from "@mui/icons-material/StopRounded";
@@ -10,21 +10,27 @@ import {
   closeWebSocket,
 } from "../../services/apiServices";
 
-const RecordingSection = ({ setTranscriptionText }) => {
-  const [isRecording, setIsRecording] = useState(false);
+const RecordingSection = ({
+  setTranscriptionText,
+  isRecording,
+  setIsRecording,
+}) => {
   const [isMuted, setIsMuted] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
-
-  let textFromServer = "";
+  const [isStopping, setIsStopping] = useState(false);
 
   const handleStopTranscription = useCallback(() => {
-    console.log("Stopping transcription...");
-    stopRecording();
-    closeWebSocket();
-    setIsRecording(false);
-    setIsMuted(false);
-    setRecordingTime(0);
-  }, []);
+    setIsStopping(true);
+    setTimeout(() => {
+      console.log("Stopping transcription...");
+      stopRecording();
+      closeWebSocket();
+      setIsRecording(false);
+      setIsMuted(false);
+      setRecordingTime(0);
+      setIsStopping(false);
+    }, 500); // Duration of the exit animation
+  }, [setIsRecording]);
 
   const startTranscription = useCallback(() => {
     console.log("Starting transcription...");
@@ -33,12 +39,10 @@ const RecordingSection = ({ setTranscriptionText }) => {
     const onOpen = () =>
       console.log("WebSocket connection opened, waiting for server ready...");
     const onMessage = (data) => {
-      console.log("Transcription result:", data);
       if (data.channel && data.channel.alternatives[0]) {
         const transcript = data.channel.alternatives[0].transcript;
         if (transcript && transcript.trim().length > 0) {
-          textFromServer += transcript + " ";
-          setTranscriptionText(textFromServer);
+          setTranscriptionText((prev) => prev + transcript + " ");
         }
       }
     };
@@ -53,7 +57,7 @@ const RecordingSection = ({ setTranscriptionText }) => {
     };
 
     connectWebSocket(onOpen, onMessage, onClose, onError, onServerReady);
-  }, [setTranscriptionText, handleStopTranscription]);
+  }, [setTranscriptionText, handleStopTranscription, setIsRecording]);
 
   // Timer effect
   useEffect(() => {
@@ -81,16 +85,17 @@ const RecordingSection = ({ setTranscriptionText }) => {
     <div className="recording-panel">
       {!isRecording ? (
         <div className="recording-center">
-          <button
-            className="mic-button"
-            onClick={startTranscription}
-          >
+          <button className="mic-button" onClick={startTranscription}>
             <MicRoundedIcon sx={{ fontSize: 56, color: "#1e1e1e" }} />
           </button>
           <div className="hint">Tap to start recording</div>
         </div>
       ) : (
-        <div className="recording-center recording-active">
+        <div
+          className={`recording-center recording-active ${
+            isStopping ? "stopping" : ""
+          }`}
+        >
           <div className="mic-container">
             <div className={`mic-button recording ${isMuted ? "muted" : ""}`}>
               <div className="timer-display">{formatTime(recordingTime)}</div>
@@ -105,14 +110,7 @@ const RecordingSection = ({ setTranscriptionText }) => {
               style={{ animationDelay: "1s" }}
             ></div>
           </div>
-          <div className="recording-status">
-            <div className="status-indicator">
-              <div
-                className={`status-dot ${isMuted ? "muted" : "active"}`}
-              ></div>
-              <span>{isMuted ? "Muted" : "Recording..."}</span>
-            </div>
-          </div>
+          <div className="recording-status"></div>
           <div className="toolbar">
             <button
               className={`toolbar-btn mute-btn ${isMuted ? "muted" : ""}`}

@@ -4,8 +4,13 @@ import "./App.scss";
 import { githubLogo } from "./assets";
 import { useState } from "react";
 
-function App() {
+const App = () => {
   const [transcriptionText, setTranscriptionText] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
+
+  const clearTranscription = () => {
+    setTranscriptionText("");
+  };
 
   return (
     <div className="app-shell">
@@ -24,14 +29,22 @@ function App() {
       </div>
       <div className="content-grid">
         <div>
-          <RecordingSection setTranscriptionText={setTranscriptionText} />
+          <RecordingSection
+            setTranscriptionText={setTranscriptionText}
+            isRecording={isRecording}
+            setIsRecording={setIsRecording}
+          />
         </div>
         <div>
-          <TranscriptionSection transcriptionText={transcriptionText} />
+          <TranscriptionSection
+            transcriptionText={transcriptionText}
+            clearTranscription={clearTranscription}
+            isRecording={isRecording}
+          />
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default App;

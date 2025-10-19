@@ -9,6 +9,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease-in-out;
+  user-select: none;
 }
 
 .recording-center {
@@ -129,13 +130,6 @@
     opacity: 1;
     transform: scale(1);
   }
-}
-
-.recording-status {
-  margin-top: 20px;
-  opacity: 0;
-  transform: translateY(10px);
-  animation: slideInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.4s forwards;
 }
 
 .status-indicator {
@@ -276,4 +270,19 @@
 button:focus,
 button:focus-visible {
   outline: none;
+}
+
+.recording-center.recording-active.stopping {
+  animation: slideOutDown 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideOutDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 }

@@ -1,19 +1,59 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import MicRoundedIcon from "@mui/icons-material/MicRounded";
 import MicOffRoundedIcon from "@mui/icons-material/MicOffRounded";
 import StopRoundedIcon from "@mui/icons-material/StopRounded";
 import "./RecordingSection.scss";
-import { closeWebSocket, connectWebSocket } from "../../services/apiServices";
+import {
+  connectWebSocket,
+  startRecording,
+  stopRecording,
+  closeWebSocket,
+} from "../../services/apiServices";
 
 const RecordingSection = ({ setTranscriptionText }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
-  const [socket, setSocket] = useState(null);
-  const [stream, setStream] = useState(null);
-  const [mediaRecorder, setMediaRecorder] = useState(null);
 
   let textFromServer = "";
+
+  const handleStopTranscription = useCallback(() => {
+    console.log("Stopping transcription...");
+    stopRecording();
+    closeWebSocket();
+    setIsRecording(false);
+    setIsMuted(false);
+    setRecordingTime(0);
+  }, []);
+
+  const startTranscription = useCallback(() => {
+    console.log("Starting transcription...");
+    setIsRecording(true);
+
+    const onOpen = () =>
+      console.log("WebSocket connection opened, waiting for server ready...");
+    const onMessage = (data) => {
+      console.log("Transcription result:", data);
+      if (data.channel && data.channel.alternatives[0]) {
+        const transcript = data.channel.alternatives[0].transcript;
+        if (transcript && transcript.trim().length > 0) {
+          textFromServer += transcript + " ";
+          setTranscriptionText(textFromServer);
+        }
+      }
+    };
+    const onClose = () => console.log("WebSocket connection closed.");
+    const onError = (error) => {
+      console.error("WebSocket error:", error);
+      handleStopTranscription(); // Stop everything on error
+    };
+    const onServerReady = () => {
+      console.log("✅ Server ready, starting recording...");
+      startRecording(() => {});
+    };
+
+    connectWebSocket(onOpen, onMessage, onClose, onError, onServerReady);
+  }, [setTranscriptionText, handleStopTranscription]);
 
   // Timer effect
   useEffect(() => {
@@ -37,92 +77,13 @@ const RecordingSection = ({ setTranscriptionText }) => {
       .padStart(2, "0")}`;
   };
 
-  const startTranscription = () => {
-    console.log("Starting transcription...");
-    const ws = connectWebSocket();
-    setSocket(ws);
-
-    ws.onopen = () => {
-      console.log("WebSocket connection opened, waiting for server ready...");
-    };
-
-    ws.onmessage = async (event) => {
-      const data = JSON.parse(event.data);
-
-      // Wait for server to signal Deepgram is ready
-      if (data.type === "ready") {
-        console.log("✅ Server ready, starting recording...");
-
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-            audio: {
-              channelCount: 1,
-              sampleRate: 16000,
-              sampleSize: 16,
-              echoCancellation: false,
-              noiseSuppression: false,
-            },
-          });
-          setStream(stream);
-
-          const recorder = new MediaRecorder(stream, {
-            mimeType: "audio/webm;codecs=opus",
-            audioBitsPerSecond: 128000,
-          });
-          setMediaRecorder(recorder);
-          recorder.start(1000);
-
-          recorder.ondataavailable = (event) => {
-            if (event.data.size > 0 && ws.readyState === WebSocket.OPEN) {
-              console.log("Sending audio chunk:", event.data.size, "bytes");
-              ws.send(event.data);
-            }
-          };
-        } catch (err) {
-          console.error("Error accessing microphone:", err);
-        }
-      } else {
-        console.log("Transcription result:", data);
-        if (data.channel && data.channel.alternatives[0]) {
-          const transcript = data.channel.alternatives[0].transcript;
-          if (transcript && transcript.trim().length > 0) {
-            textFromServer += transcript + " ";
-            setTranscriptionText(textFromServer);
-          }
-        }
-      }
-    };
-
-    ws.onclose = () => {
-      console.log("WebSocket connection closed.");
-    };
-
-    ws.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-  };
-
-  const stopTranscription = () => {
-    console.log("Stopping transcription...");
-    if (mediaRecorder) {
-      mediaRecorder.stop();
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-      }
-    }
-    closeWebSocket(socket);
-  };
-
   return (
     <div className="recording-panel">
       {!isRecording ? (
         <div className="recording-center">
           <button
             className="mic-button"
-            onClick={() => {
-              setIsRecording(true);
-              startTranscription();
-            }}
+            onClick={startTranscription}
           >
             <MicRoundedIcon sx={{ fontSize: 56, color: "#1e1e1e" }} />
           </button>
@@ -161,12 +122,7 @@ const RecordingSection = ({ setTranscriptionText }) => {
             </button>
             <button
               className="toolbar-btn stop-btn"
-              onClick={() => {
-                setIsRecording(false);
-                setIsMuted(false);
-                setRecordingTime(0);
-                stopTranscription();
-              }}
+              onClick={handleStopTranscription}
             >
               <StopRoundedIcon sx={{ fontSize: 20 }} />
             </button>

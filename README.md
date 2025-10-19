@@ -36,17 +36,26 @@ The application uses a carefully crafted color palette:
 
 ```
 src/
+├── assets/
+│   ├── github-mark.svg           # GitHub logo
+│   ├── index.js                  # Asset index
+│   └── react.svg                 # React logo
 ├── components/
-│   ├── RecordingSection.jsx      # Audio recording interface
-│   ├── RecordingSection.scss     # Recording component styles
-│   ├── TranscriptionSection.jsx  # Transcription display
-│   └── TranscriptionSection.scss # Transcription styles
+│   ├── RecordingSection/
+│   │   ├── RecordingSection.jsx  # Audio recording interface
+│   │   └── RecordingSection.scss # Recording component styles
+│   └── TranscriptionSection/
+│       ├── TranscriptionSection.jsx # Transcription display
+│       └── TranscriptionSection.scss# Transcription styles
+├── services/
+│   └── apiServices.js            # API service for transcription
+├── App.css                       # App component styles
 ├── App.jsx                       # Main application component
-├── App.scss                      # Application styles
+├── App.scss                      # App component styles
+├── index.css                     # Base CSS styles
 ├── main.jsx                      # Application entry point
-├── theme.js                      # Material-UI theme configuration
 ├── styles.scss                   # Global styles
-└── index.css                     # Base CSS styles
+└── theme.js                      # Material-UI theme configuration
 ```
 
 ## 🛠️ Installation

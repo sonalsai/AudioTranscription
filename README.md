@@ -18,20 +18,6 @@ A modern, real-time audio transcription application built with React and Vite. T
 - **Icons**: Material-UI Icons
 - **Build Tool**: Vite for fast development and building
 
-## 🎨 Design System
-
-The application uses a carefully crafted color palette:
-
-| Role | Color | Hex | Description |
-|------|-------|-----|-------------|
-| Background | `#F7F9FB` | Soft off-white | Main background color |
-| Surface (cards) | `#FFFFFF` | Pure white | Card and panel backgrounds |
-| Primary Accent | `#1976D2` | MUI Blue | Primary actions and highlights |
-| Secondary Accent | `#64B5F6` | Soft light blue | Secondary elements |
-| Text Primary | `#1E1E1E` | Deep gray | Main text color |
-| Text Secondary | `#5F6368` | Neutral gray | Secondary text |
-| Highlight | `#42A5F5` | Sky blue | Waveform and mic glow |
-
 ## 📁 Project Structure
 
 ```
@@ -108,13 +94,11 @@ Edit `src/theme.js` to modify the Material-UI theme:
 
 ## 🚧 Future Enhancements
 
-- [ ] Real-time speech-to-text integration
+- [x] Real-time speech-to-text integration
 - [ ] Audio file upload support
 - [ ] Export transcription functionality
 - [ ] Multiple language support
 - [ ] Audio visualization improvements
-- [ ] Keyboard shortcuts
-- [ ] Dark mode toggle
 
 ## 🤝 Contributing
 

@@ -20,6 +20,7 @@ jobs:
         run: |
           echo "Event name: $EVENT_NAME"
           echo "Event action: $EVENT_ACTION"
+          REPO_NAME=$(echo "$FULL_REPO" | cut -d'/' -f2)
 
           if [ "$EVENT_NAME" = "pull_request" ]; then
             PR_TITLE="${{ github.event.pull_request.title }}"
@@ -39,7 +40,7 @@ jobs:
             AUTHOR="${{ github.actor }}"
             COMMIT_URL="${{ github.event.head_commit.url }}"
             COMMIT_MSG="${{ github.event.head_commit.message }}"
-            MESSAGE="🤖 **${{ github.repository }}" | cut -d'/' -f2** \n🚀 **Direct Push** 🚀 \n🌿 Branch Name : $BRANCH_NAME \n🥸 Author :  **$AUTHOR**\n📌 Commit : [$COMMIT_MSG]($COMMIT_URL)"
+            MESSAGE="🤖 **$REPO_NAME** \n🚀 **Direct Push** 🚀 \n🌿 Branch Name : $BRANCH_NAME \n🥸 Author :  **$AUTHOR**\n📌 Commit : [$COMMIT_MSG]($COMMIT_URL)"
           else
             MESSAGE="⚠️ Unhandled event: $EVENT_NAME"
           fi

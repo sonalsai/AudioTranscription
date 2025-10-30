@@ -39,7 +39,7 @@ jobs:
             AUTHOR="${{ github.actor }}"
             COMMIT_URL="${{ github.event.head_commit.url }}"
             COMMIT_MSG="${{ github.event.head_commit.message }}"
-            MESSAGE="🚀 **Code pushed to \`$BRANCH_NAME\`** by **$AUTHOR**\n📝 Commit: [$COMMIT_MSG]($COMMIT_URL)"
+            MESSAGE="🤖 **${{ github.repository }}" | cut -d'/' -f2** \n🚀 **Direct Push** 🚀 \n🌿 Branch Name : $BRANCH_NAME \n🥸 Author :  **$AUTHOR**\n📌 Commit : [$COMMIT_MSG]($COMMIT_URL)"
           else
             MESSAGE="⚠️ Unhandled event: $EVENT_NAME"
           fi

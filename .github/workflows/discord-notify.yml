@@ -39,17 +39,17 @@ jobs:
             AUTHOR_NAME=${PR_AUTHOR_NAME:-$PR_AUTHOR_LOGIN}
 
             if [ "$EVENT_ACTION" = "opened" ]; then
-              MESSAGE="🟢✨=========================✨\n📂 **Repository:** $REPO_NAME\n✨=========================✨\n\n🛠️ **New Pull Request Created**\n\n👤 Author: **$AUTHOR_NAME**\n\n📄 Title: **$PR_TITLE**\n\n🔗 [View Pull Request]($PR_URL)"
+              MESSAGE="✨=========================✨\n📂 **Repository:** $REPO_NAME\n✨=========================✨\n\n🛠️ **New Pull Request Created**\n\n👤 Author: **$AUTHOR_NAME**\n\n📄 Title: **$PR_TITLE**\n\n🔗 [View Pull Request]($PR_URL)"
             
             elif [ "$EVENT_ACTION" = "closed" ] && [ "$PR_MERGED" = "true" ]; then
-              MESSAGE="🟣✨=========================✨\n📂 **Repository:** $REPO_NAME\n✨=========================✨\n\n✅ **Pull Request Merged Successfully!**\n\n👤 Merged by: **$AUTHOR_NAME**\n\n📄 Title: **$PR_TITLE**\n\n🔗 [View Pull Request]($PR_URL)"
+              MESSAGE="✨=========================✨\n📂 **Repository:** $REPO_NAME\n✨=========================✨\n\n✅ **Pull Request Merged Successfully!**\n\n👤 Merged by: **$AUTHOR_NAME**\n\n📄 Title: **$PR_TITLE**\n\n🔗 [View Pull Request]($PR_URL)"
             
             else
-              MESSAGE="🔴✨=========================✨\n📂 **Repository:** $REPO_NAME\n✨=========================✨\n\n❌ **Pull Request Closed Without Merge**\n\n👤 Closed by: **$AUTHOR_NAME**\n\n📄 Title: **$PR_TITLE**\n\n🔗 [View Pull Request]($PR_URL)"
+              MESSAGE="✨=========================✨\n📂 **Repository:** $REPO_NAME\n✨=========================✨\n\n❌ **Pull Request Closed Without Merge**\n\n👤 Closed by: **$AUTHOR_NAME**\n\n📄 Title: **$PR_TITLE**\n\n🔗 [View Pull Request]($PR_URL)"
             fi
 
           elif [ "$EVENT_NAME" = "push" ]; then
-            MESSAGE="🚀✨=========================✨\n📂 **Repository:** $REPO_NAME\n✨=========================✨\n\n🚀 **New Push to Branch:** $BRANCH_NAME\n\n👤 Author: **$AUTHOR**\n\n🧾 Commit: [$COMMIT_MSG]($COMMIT_URL)\n\n🔖 Commit ID: \`$SHORT_SHA\`"
+            MESSAGE="✨=========================✨\n📂 **Repository:** $REPO_NAME\n✨=========================✨\n\n🚀 **New Push to Branch:** $BRANCH_NAME\n\n👤 Author: **$AUTHOR**\n\n🧾 Commit: [$COMMIT_MSG]($COMMIT_URL)\n\n🔖 Commit ID: \`$SHORT_SHA\`"
 
           else
             MESSAGE="⚠️ Unhandled event type: $EVENT_NAME"

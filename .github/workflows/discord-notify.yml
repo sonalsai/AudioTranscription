@@ -1,0 +1,51 @@
+name: Discord Notifications
+
+on:
+  pull_request:
+    types: [opened, closed]
+  push:
+    branches:
+      - main
+
+jobs:
+  discord_notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Discord message
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_ACTION: ${{ github.event.action }}
+        run: |
+          echo "Event name: $EVENT_NAME"
+          echo "Event action: $EVENT_ACTION"
+
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            PR_TITLE="${{ github.event.pull_request.title }}"
+            PR_URL="${{ github.event.pull_request.html_url }}"
+            PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+            PR_MERGED="${{ github.event.pull_request.merged }}"
+
+            if [ "$EVENT_ACTION" = "opened" ]; then
+              MESSAGE="🛠️ **New Pull Request** by **$PR_AUTHOR**\n👉 [$PR_TITLE]($PR_URL)"
+            elif [ "$EVENT_ACTION" = "closed" ] && [ "$PR_MERGED" = "true" ]; then
+              MESSAGE="✅ **Pull Request Merged!** by **$PR_AUTHOR**\n🔗 [$PR_TITLE]($PR_URL)"
+            else
+              MESSAGE="❌ Pull Request closed without merging by **$PR_AUTHOR**"
+            fi
+          elif [ "$EVENT_NAME" = "push" ]; then
+            BRANCH_NAME="${{ github.ref_name }}"
+            AUTHOR="${{ github.actor }}"
+            COMMIT_URL="${{ github.event.head_commit.url }}"
+            COMMIT_MSG="${{ github.event.head_commit.message }}"
+            MESSAGE="🚀 **Code pushed to \`$BRANCH_NAME\`** by **$AUTHOR**\n📝 Commit: [$COMMIT_MSG]($COMMIT_URL)"
+          else
+            MESSAGE="⚠️ Unhandled event: $EVENT_NAME"
+          fi
+
+          echo "Sending message to Discord..."
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "{\"content\": \"$MESSAGE\"}" \
+               $DISCORD_WEBHOOK_URL

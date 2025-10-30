@@ -20,7 +20,7 @@ jobs:
         run: |
           echo "Event name: $EVENT_NAME"
           echo "Event action: $EVENT_ACTION"
-          REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
+          REPO_NAME=${{ github.repository }}
 
           if [ "$EVENT_NAME" = "pull_request" ]; then
             PR_TITLE="${{ github.event.pull_request.title }}"

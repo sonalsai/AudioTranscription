@@ -44,7 +44,7 @@ jobs:
             COMMIT_SHA="${{ github.sha }}"
             SHORT_SHA=$(echo "$COMMIT_SHA" | cut -c1-7)
 
-            MESSAGE="🚀✨=========================✨\n📂 **Repository:** $REPO_NAME\n✨=========================✨\n\n🚀 **New Push to Branch: ** $BRANCH_NAME\n\n👤 Author:  **$AUTHOR**\n\n🧾 Commit:  **[$COMMIT_MSG]($COMMIT_URL)**\n\n🔖 Commit ID: \`$SHORT_SHA\`"
+            MESSAGE="🚀✨=========================✨\n📂 **Repository:** $REPO_NAME\n✨=========================✨\n\n🚀 **New Push to Branch:**  $BRANCH_NAME\n\n👤 Author: ** $AUTHOR**\n\n🧾 Commit: ** [$COMMIT_MSG]($COMMIT_URL)**\n\n🔖 Commit ID: \`$SHORT_SHA\`"
 
           else
             MESSAGE="⚠️ Unhandled event type: $EVENT_NAME"

@@ -18,6 +18,9 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
           EVENT_ACTION: ${{ github.event.action }}
         run: |
+          echo "Event name: $EVENT_NAME"
+          echo "Event action: $EVENT_ACTION"
+          
           REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
 
           if [ "$EVENT_NAME" = "pull_request" ]; then

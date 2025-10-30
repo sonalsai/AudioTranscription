@@ -20,7 +20,8 @@ jobs:
         run: |
           echo "Event name: $EVENT_NAME"
           echo "Event action: $EVENT_ACTION"
-          REPO_NAME=${{ github.repository }}
+
+          REPO_NAME="${{ github.repository }}"
 
           if [ "$EVENT_NAME" = "pull_request" ]; then
             PR_TITLE="${{ github.event.pull_request.title }}"
@@ -35,12 +36,14 @@ jobs:
             else
               MESSAGE="❌ Pull Request closed without merging by **$PR_AUTHOR**"
             fi
+
           elif [ "$EVENT_NAME" = "push" ]; then
             BRANCH_NAME="${{ github.ref_name }}"
             AUTHOR="${{ github.actor }}"
             COMMIT_URL="${{ github.event.head_commit.url }}"
             COMMIT_MSG="${{ github.event.head_commit.message }}"
-            MESSAGE="🤖 $REPO_NAME \n🚀 Direct Push 🚀 \n🌿 Branch Name : $BRANCH_NAME \n🥸 Author :  $AUTHOR\n📌 Commit : [$COMMIT_MSG]($COMMIT_URL)"
+
+            MESSAGE="🤖 **$REPO_NAME**\n🚀 **Direct Push** 🚀\n🌿 Branch Name : $BRANCH_NAME\n🥸 Author : $AUTHOR\n📌 Commit : [$COMMIT_MSG]($COMMIT_URL)"
           else
             MESSAGE="⚠️ Unhandled event: $EVENT_NAME"
           fi

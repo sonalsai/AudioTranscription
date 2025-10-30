@@ -1,5 +1,5 @@
-import RecordingSection from "./components/RecordingSection/RecordingSection";
-import TranscriptionSection from "./components/TranscriptionSection/TranscriptionSection";
+import RecordingSection from "./components/AudioRecorder";
+import TranscriptionSection from "./components/TranscriptDisplay";
 import "./App.scss";
 import { githubLogo } from "./assets";
 import { useState } from "react";

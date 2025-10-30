@@ -1,5 +1,5 @@
 // Plain HTML structure; styles in component SCSS
-import "./TranscriptionSection.scss";
+import "./style.scss";
 
 const TranscriptionSection = ({ transcriptionText, clearTranscription, isRecording }) => {
   return (

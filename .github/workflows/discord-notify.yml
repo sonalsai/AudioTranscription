@@ -27,11 +27,13 @@ jobs:
             PR_MERGED="${{ github.event.pull_request.merged }}"
 
             if [ "$EVENT_ACTION" = "opened" ]; then
-              MESSAGE="🛠️ **New Pull Request** by **$PR_AUTHOR**\n👉 [$PR_TITLE]($PR_URL)"
+              MESSAGE="🟢✨=========================✨\n\n📂 **Repository:** $REPO_NAME\n\n✨=========================✨\n\n🛠️ **New Pull Request Created**\n👤 Author: **$PR_AUTHOR**\n📄 Title: **$PR_TITLE**\n🔗 [View Pull Request]($PR_URL)"
+            
             elif [ "$EVENT_ACTION" = "closed" ] && [ "$PR_MERGED" = "true" ]; then
-              MESSAGE="✅ **Pull Request Merged!** by **$PR_AUTHOR**\n🔗 [$PR_TITLE]($PR_URL)"
+              MESSAGE="🟣✨=========================✨\n\n📂 **Repository:** $REPO_NAME\n\n✨=========================✨\n\n✅ **Pull Request Merged Successfully!**\n👤 Merged by: **$PR_AUTHOR**\n📄 Title: **$PR_TITLE**\n🔗 [View Pull Request]($PR_URL)"
+            
             else
-              MESSAGE="❌ Pull Request closed without merging by **$PR_AUTHOR**"
+              MESSAGE="🔴✨=========================✨\n\n📂 **Repository:** $REPO_NAME\n\n✨=========================✨\n\n❌ **Pull Request Closed Without Merge**\n👤 Closed by: **$PR_AUTHOR**\n📄 Title: **$PR_TITLE**\n🔗 [View Pull Request]($PR_URL)"
             fi
 
           elif [ "$EVENT_NAME" = "push" ]; then
@@ -39,10 +41,13 @@ jobs:
             AUTHOR="${{ github.actor }}"
             COMMIT_URL="${{ github.event.head_commit.url }}"
             COMMIT_MSG="${{ github.event.head_commit.message }}"
+            COMMIT_SHA="${{ github.sha }}"
+            SHORT_SHA=$(echo "$COMMIT_SHA" | cut -c1-7)
 
-            MESSAGE="✨=========================✨\n\n🤖 **$REPO_NAME**\n\n✨=========================✨\n\n🚀 **Direct Push** 🚀\n\n🌿 Branch Name : $BRANCH_NAME\n\n🥸 Author : $AUTHOR\n\n📌 Commit : [$COMMIT_MSG]($COMMIT_URL)"
+            MESSAGE="🚀✨=========================✨\n\n📂 **Repository:** $REPO_NAME\n\n✨=========================✨\n\n🚀 **New Push to Branch:** $BRANCH_NAME\n👤 Author: **$AUTHOR**\n🧾 Commit: **[$COMMIT_MSG]($COMMIT_URL)**\n🔖 Commit ID: \`$SHORT_SHA\`"
+
           else
-            MESSAGE="⚠️ Unhandled event: $EVENT_NAME"
+            MESSAGE="⚠️ Unhandled event type: $EVENT_NAME"
           fi
 
           echo "Sending message to Discord..."

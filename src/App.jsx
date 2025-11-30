@@ -5,6 +5,7 @@ import "./App.scss";
 import { githubLogo } from "./assets";
 import { useState, useEffect } from "react";
 import { Mic2 } from "lucide-react";
+import { motion } from "framer-motion";
 
 const STORAGE_KEY = "audioTranscriptionText";
 
@@ -31,15 +32,22 @@ const App = () => {
 
   return (
     <div className="app-shell">
-      <div className="app-header">
+      <motion.div
+        className="app-header"
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
         <div className="header-left">
           <div className="app-icon">
             <Mic2 size={24} color="white" />
           </div>
           <h1>Audio Transcription Dashboard</h1>
         </div>
-        <div
+        <motion.div
           className="github-link"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() =>
             window.open(
               "https://github.com/sonalsai/AudioTranscription",
@@ -48,27 +56,35 @@ const App = () => {
           }
         >
           <img src={githubLogo} alt="GitHub" />
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       <StateIndicator state={isRecording ? "recording" : "idle"} />
 
       <div className="content-grid">
-        <div>
+        <motion.div
+          initial={{ x: -20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+        >
           <RecordingSection
             setTranscriptionText={setTranscriptionText}
             isRecording={isRecording}
             setIsRecording={setIsRecording}
             setAppState={setAppState}
           />
-        </div>
-        <div>
+        </motion.div>
+        <motion.div
+          initial={{ x: 20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+        >
           <TranscriptionSection
             transcriptionText={transcriptionText}
             clearTranscription={clearTranscription}
             isRecording={isRecording}
           />
-        </div>
+        </motion.div>
       </div>
     </div>
   );

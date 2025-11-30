@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { FileText, Trash2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import "./style.scss";
 
 const TranscriptionSection = ({
@@ -39,36 +40,67 @@ const TranscriptionSection = ({
 
   return (
     <div className="transcription-panel">
-      <div className="transcription-header">
+      <motion.div
+        className="transcription-header"
+        initial={{ y: -10, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
         <div className="header-content">
           <FileText size={24} strokeWidth={2} />
           <h2>Transcription</h2>
         </div>
-        <button
+        <motion.button
           className="clear-btn"
           onClick={clearTranscription}
           disabled={isRecording || !transcriptionText}
           title="Clear transcription"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
         >
           <Trash2 size={20} />
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
 
       <div className="transcription-divider"></div>
 
       <div className="transcription-text" ref={textRef}>
-        {displayedText ? (
-          <p className="text-content">
-            {displayedText}
-            {showCursor && <span className="typing-cursor">|</span>}
-          </p>
-        ) : (
-          <p className="placeholder">
-            <span className="placeholder-icon">🎙️</span>
-            <span>Transcribed text will appear here...</span>
-            <span className="placeholder-hint">Start recording to begin</span>
-          </p>
-        )}
+        <AnimatePresence mode="wait">
+          {displayedText ? (
+            <motion.p
+              key="text"
+              className="text-content"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              {displayedText}
+              {showCursor && <span className="typing-cursor">|</span>}
+            </motion.p>
+          ) : (
+            <motion.p
+              key="placeholder"
+              className="placeholder"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <motion.span
+                className="placeholder-icon"
+                animate={{ y: [0, -10, 0] }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                🎙️
+              </motion.span>
+              <span>Transcribed text will appear here...</span>
+              <span className="placeholder-hint">Start recording to begin</span>
+            </motion.p>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

@@ -82,7 +82,29 @@ src/
 4.  **Open your browser**
     Navigate to `http://localhost:5173`
 
-## � Usage
+## ⚙️ Configuration
+
+To connect to the transcription server, you need to configure the WebSocket URL in a `.env` file at the root of the project.
+
+1.  Create a file named `.env` in the root directory.
+2.  Add the `VITE_WEBSOCKET_URL` variable.
+
+**Option A: Use the Hosted Server**
+
+```env
+VITE_WEBSOCKET_URL=wss://audiotranscriptionserver.onrender.com/ws
+```
+
+**Option B: Run Locally**
+If you want to run the backend server locally, follow the instructions in the [AudioTranscriptionServer repository](https://github.com/sonalsai/AudioTranscriptionServer).
+
+Then, set your local URL:
+
+```env
+VITE_WEBSOCKET_URL=ws://localhost:3000/ws
+```
+
+## 💡 Usage
 
 1.  **Start Recording**: Click the large microphone button. The state indicator will turn red and pulse.
 2.  **Controls**:

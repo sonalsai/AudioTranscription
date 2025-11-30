@@ -1,0 +1,9 @@
+.waveform-canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 163, 0.3));
+}

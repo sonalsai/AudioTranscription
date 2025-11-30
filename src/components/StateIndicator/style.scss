@@ -1,0 +1,68 @@
+.state-indicator {
+  height: 2px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 1px;
+  margin-bottom: 16px;
+  overflow: visible;
+  position: relative;
+  z-index: 10;
+
+  .state-bar {
+    height: 100%;
+    width: 0%;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 1px;
+    position: relative;
+
+    &.idle {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    &.recording {
+      width: 100%;
+      background: #ef4444;
+      box-shadow: 0 0 10px #ef4444, 0 0 20px rgba(239, 68, 68, 0.5);
+      animation: pulse-bar 1.5s ease-in-out infinite;
+    }
+
+    &.transcribing {
+      width: 100%;
+      background: var(--accent-mint);
+      box-shadow: 0 0 10px var(--accent-mint), 0 0 20px rgba(0, 255, 163, 0.5);
+      animation: shimmer 2s linear infinite;
+    }
+
+    &.processing {
+      width: 100%;
+      background: var(--accent-blue);
+      box-shadow: 0 0 10px var(--accent-blue);
+      animation: shimmer 2s linear infinite;
+    }
+  }
+}
+
+@keyframes pulse-bar {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 8px #ef4444, 0 0 16px rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 12px #ef4444, 0 0 24px rgba(239, 68, 68, 0.6);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}

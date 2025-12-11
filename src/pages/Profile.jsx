@@ -26,7 +26,7 @@ const Profile = () => {
         <div className="header-left">
           <div
             className="back-button"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/dashboard")}
             style={{
               cursor: "pointer",
               display: "flex",
@@ -47,7 +47,7 @@ const Profile = () => {
         </div>
         <button
           className="logout-button"
-          onClick={() => navigate("/login")}
+          onClick={() => navigate("/")}
           style={{
             background: "rgba(255, 59, 48, 0.1)",
             color: "#ff3b30",

@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Mic2, Lock, Mail, ArrowRight } from "lucide-react";
-import "../App.scss"; // Reuse some app styles
-import "./Auth.scss"; // Create new styles for auth
+import { Mic2 } from "lucide-react";
+import speechToTextSvg from "../assets/undraw_speech-to-text_4kov.svg";
+import "../App.scss";
+import "./Auth.scss";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -17,85 +18,103 @@ const Login = () => {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      navigate("/");
+      navigate("/dashboard");
     }, 1500);
   };
 
   return (
     <div className="auth-container">
-      <div className="auth-background">
-        <div className="glow-orb orb-1" />
-        <div className="glow-orb orb-2" />
-      </div>
-
       <motion.div
-        className="auth-card glass-strong"
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        className="auth-wrapper"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.3 }}
       >
-        <div className="auth-header">
-          <div className="logo-wrapper">
-            <Mic2 size={32} color="#00ffa3" />
+        {/* Left Side - Visual */}
+        <div className="auth-visual-side">
+          <div className="visual-content">
+            <div className="visual-logo">
+              <Mic2 size={24} currentColor />
+            </div>
+
+            <div className="visual-illustration">
+              <img
+                src={speechToTextSvg}
+                alt="Speech to Text Illustration"
+                style={{
+                  maxWidth: "80%",
+                  height: "auto",
+                  maxHeight: "350px",
+                  objectFit: "contain",
+                }}
+              />
+            </div>
+
+            <div className="visual-text">
+              <h2>
+                Be a Part of
+                <br />
+                Something Beautiful
+              </h2>
+              <p>Experience the future of audio transcription.</p>
+            </div>
           </div>
-          <h2>Welcome Back</h2>
-          <p>Sign in to continue to your dashboard</p>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email</label>
-            <div className="input-wrapper">
-              <Mail size={18} className="input-icon" />
+        {/* Right Side - Form */}
+        <div className="auth-form-side">
+          <div className="auth-header">
+            <div className="icon-wrapper">
+              <Mic2 size={32} className="main-icon" />
+            </div>
+            <h1>Login</h1>
+            <p>Enter your credentials to access your account</p>
+          </div>
+
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Email</label>
               <input
                 type="email"
-                placeholder="Enter your email"
+                placeholder="aimerzoix@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
-          </div>
 
-          <div className="form-group">
-            <label>Password</label>
-            <div className="input-wrapper">
-              <Lock size={18} className="input-icon" />
+            <div className="form-group">
+              <label>Password</label>
               <input
                 type="password"
-                placeholder="Enter your password"
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
+
+            <div className="form-options">
+              <label className="checkbox-label">
+                <input type="checkbox" />
+                <span>Remember me</span>
+              </label>
+              <a href="#" className="forgot-link">
+                Forgot password?
+              </a>
+            </div>
+
+            <button type="submit" className="auth-button" disabled={isLoading}>
+              {isLoading ? "Signing in..." : <>Login</>}
+            </button>
+          </form>
+
+          <div className="auth-footer-text">
+            Not a member? <Link to="/signup">Create an account</Link>
           </div>
 
-          <div className="form-options">
-            <label className="checkbox-label">
-              <input type="checkbox" />
-              <span>Remember me</span>
-            </label>
-            <a href="#" className="forgot-password">
-              Forgot password?
-            </a>
-          </div>
-
-          <button type="submit" className="auth-button" disabled={isLoading}>
-            {isLoading ? (
-              "Signing in..."
-            ) : (
-              <>
-                Sign In <ArrowRight size={18} />
-              </>
-            )}
-          </button>
-        </form>
-
-        <div className="auth-footer">
-          <p>
-            Don't have an account? <Link to="/signup">Sign up</Link>
-          </p>
+          <div className="powered-by">© 2025 AudioTranscribe</div>
         </div>
       </motion.div>
     </div>

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Mic2, Lock, Mail, User, ArrowRight } from "lucide-react";
+import { Mic2, ArrowRight } from "lucide-react";
+import speechToTextSvg from "../assets/undraw_speech-to-text_4kov.svg";
 import "./Auth.scss";
 
 const Signup = () => {
@@ -18,36 +19,63 @@ const Signup = () => {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      navigate("/");
+      navigate("/dashboard");
     }, 1500);
   };
 
   return (
     <div className="auth-container">
-      <div className="auth-background">
-        <div className="glow-orb orb-1" />
-        <div className="glow-orb orb-2" />
-      </div>
-
       <motion.div
-        className="auth-card glass-strong"
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        className="auth-wrapper reversed"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.3 }}
       >
-        <div className="auth-header">
-          <div className="logo-wrapper">
-            <Mic2 size={32} color="#00ffa3" />
+        {/* Visual Side (Will be on Right due to reversed class) */}
+        <div className="auth-visual-side">
+          <div className="visual-content">
+            <div className="visual-logo">
+              <Mic2 size={24} currentColor />
+            </div>
+
+            <div className="visual-illustration">
+              <img
+                src={speechToTextSvg}
+                alt="Speech to Text Illustration"
+                style={{
+                  maxWidth: "80%",
+                  height: "auto",
+                  maxHeight: "350px",
+                  objectFit: "contain",
+                }}
+              />
+            </div>
+
+            <div className="visual-text">
+              <h2>
+                Join the
+                <br />
+                Revolution
+              </h2>
+              <p>Create your account and start transcribing in seconds.</p>
+            </div>
           </div>
-          <h2>Create Account</h2>
-          <p>Start transcribing your audio today</p>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Full Name</label>
-            <div className="input-wrapper">
-              <User size={18} className="input-icon" />
+        {/* Form Side (Will be on Left due to reversed class) */}
+        <div className="auth-form-side">
+          <div className="auth-header">
+            <div className="icon-wrapper">
+              <Mic2 size={32} className="main-icon" />
+            </div>
+            <h1>Create Account</h1>
+            <p>Start transcribing your audio today</p>
+          </div>
+
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Full Name</label>
               <input
                 type="text"
                 placeholder="Enter your name"
@@ -56,12 +84,9 @@ const Signup = () => {
                 required
               />
             </div>
-          </div>
 
-          <div className="form-group">
-            <label>Email</label>
-            <div className="input-wrapper">
-              <Mail size={18} className="input-icon" />
+            <div className="form-group">
+              <label>Email</label>
               <input
                 type="email"
                 placeholder="Enter your email"
@@ -70,12 +95,9 @@ const Signup = () => {
                 required
               />
             </div>
-          </div>
 
-          <div className="form-group">
-            <label>Password</label>
-            <div className="input-wrapper">
-              <Lock size={18} className="input-icon" />
+            <div className="form-group">
+              <label>Password</label>
               <input
                 type="password"
                 placeholder="Create a password"
@@ -84,23 +106,23 @@ const Signup = () => {
                 required
               />
             </div>
+
+            <button type="submit" className="auth-button" disabled={isLoading}>
+              {isLoading ? (
+                "Creating Account..."
+              ) : (
+                <>
+                  Sign Up <ArrowRight size={18} />
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="auth-footer-text">
+            Already have an account? <Link to="/">Sign in</Link>
           </div>
 
-          <button type="submit" className="auth-button" disabled={isLoading}>
-            {isLoading ? (
-              "Creating Account..."
-            ) : (
-              <>
-                Sign Up <ArrowRight size={18} />
-              </>
-            )}
-          </button>
-        </form>
-
-        <div className="auth-footer">
-          <p>
-            Already have an account? <Link to="/login">Sign in</Link>
-          </p>
+          <div className="powered-by">© 2025 AudioTranscribe AI</div>
         </div>
       </motion.div>
     </div>
